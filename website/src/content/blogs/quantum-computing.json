@@ -1,0 +1,9 @@
+{
+  "name": "Quantum Computing",
+  "description": "Logical qubits, error correction and experimental milestones, including disputes and replication status.",
+  "accent": "#0c8599",
+  "template": "research",
+  "categories": ["Error correction", "Hardware"],
+  "order": 13,
+  "published": true
+}

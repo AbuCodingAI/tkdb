@@ -1,0 +1,9 @@
+{
+  "name": "Emerging Technology",
+  "description": "Chips, computing systems, robotics, energy and engineering advances, separated from marketing.",
+  "accent": "#e67700",
+  "template": "research",
+  "categories": ["Computing", "Energy", "Robotics"],
+  "order": 12,
+  "published": false
+}

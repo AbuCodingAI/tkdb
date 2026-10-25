@@ -1,0 +1,9 @@
+{
+  "name": "AI Breakthroughs",
+  "description": "Carefully verified reporting on major AI results: what was shown, what was only claimed, and what is still open.",
+  "accent": "#7048e8",
+  "template": "research",
+  "categories": ["Capabilities", "Safety"],
+  "order": 10,
+  "published": true
+}
