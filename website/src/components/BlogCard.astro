@@ -1,0 +1,18 @@
+---
+import type { Blog } from '../lib/content';
+import Cover from './Cover.astro';
+interface Props { blog: Blog; count: number; delay?: number }
+const { blog, count, delay = 0 } = Astro.props;
+---
+
+<article class="card" style={`--card-accent:${blog.data.accent}; animation-delay:${delay}ms`}>
+  <Cover src={blog.data.cover} alt={blog.data.coverAlt} accent={blog.data.accent} label={blog.data.name.slice(0, 2).toUpperCase()} />
+  <div class="card-body">
+    <div class="card-meta">
+      <span>{count} {count === 1 ? 'post' : 'posts'}</span>
+      {blog.data.demo && <span class="badge demo">Demo</span>}
+    </div>
+    <h3><a href={blog.url}>{blog.data.name}</a></h3>
+    <p>{blog.data.description}</p>
+  </div>
+</article>

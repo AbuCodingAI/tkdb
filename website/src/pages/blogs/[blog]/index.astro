@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Cover from '../../../components/Cover.astro';
+import PostCard from '../../../components/PostCard.astro';
+import EmptyState from '../../../components/EmptyState.astro';
+import { getBlogs, getPosts, postsForBlog, featuredPost, countBy } from '../../../lib/content';
+import { SITE } from '../../../config';
+
+export async function getStaticPaths() {
+  const [blogs, posts] = await Promise.all([getBlogs(), getPosts()]);
+  return blogs.map((blog) => ({ params: { blog: blog.id }, props: { blog, posts: postsForBlog(posts, blog.id) } }));
+}
+const { blog, posts } = Astro.props;
+const featured = featuredPost(blog, posts);
+const rest = posts.filter((p) => p !== featured);
+const categories = countBy(posts.map((p) => p.data.category).filter((c): c is string => !!c));
+const tags = countBy(posts.flatMap((p) => p.data.tags));
+---
+
+<BaseLayout title={blog.data.name} description={blog.data.description} image={blog.data.cover} rss={{ title: `${blog.data.name} — RSS`, href: blog.rssUrl }}>
+  <section class="blog-hero" style={`--blog-accent:${blog.data.accent}`}>
+    <div class="container blog-hero-inner">
+      <div>
+        <p class="kicker">Blog{blog.data.demo ? ' · demo' : ''}</p>
+        <h1>{blog.data.name}</h1>
+        <p class="lede" style="color:var(--ink-soft);font-size:1.15rem">{blog.data.description}</p>
+        <p class="mono muted" style="font-size:0.85rem">
+          {blog.data.author ? `By ${blog.data.author} · ` : `By ${SITE.author.name} · `}{posts.length} {posts.length === 1 ? 'post' : 'posts'} · <a href={blog.rssUrl}>RSS</a>
+        </p>
+      </div>
+      <Cover src={blog.data.cover} alt={blog.data.coverAlt} accent={blog.data.accent} label={blog.data.name.slice(0, 2).toUpperCase()} eager />
+    </div>
+  </section>
+
+  <div class="container layout-2">
+    <section aria-label="Posts">
+      {featured && <div class="grid" style="margin-bottom:1.5rem"><PostCard post={featured} featured showBlog={false} /></div>}
+      {rest.length ? (
+        <div class="grid two">{rest.map((p, i) => <PostCard post={p} showBlog={false} delay={i * 50} />)}</div>
+      ) : !featured ? (
+        <EmptyState title="No posts yet">Add Markdown files to <code>src/content/posts/{blog.id}/</code>.</EmptyState>
+      ) : null}
+    </section>
+    <aside class="sidebar" aria-label="Filter posts">
+      {categories.length > 0 && (
+        <section>
+          <h2>Categories</h2>
+          <ul class="chip-row" style="list-style:none;padding:0;margin:0">{categories.map((c) => <li><a class="chip" href={`${blog.url}category/${c.slug}/`}>{c.label} ({c.count})</a></li>)}</ul>
+        </section>
+      )}
+      {tags.length > 0 && (
+        <section>
+          <h2>Tags</h2>
+          <ul class="chip-row" style="list-style:none;padding:0;margin:0">{tags.map((t) => <li><a class="chip" href={`${blog.url}tags/${t.slug}/`}>#{t.label} ({t.count})</a></li>)}</ul>
+        </section>
+      )}
+      <section>
+        <h2>Follow</h2>
+        <a class="chip" href={blog.rssUrl}>RSS feed</a>
+      </section>
+    </aside>
+  </div>
+</BaseLayout>

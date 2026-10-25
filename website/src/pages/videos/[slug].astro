@@ -1,0 +1,29 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import YouTube from '../../components/YouTube.astro';
+import { getVideos, videoThumb } from '../../lib/content';
+import { formatDate, isoDate } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const videos = await getVideos();
+  return videos.map((video) => ({ params: { slug: video.id }, props: { video } }));
+}
+const { video } = Astro.props;
+const d = video.data;
+const { Content } = await render(video);
+---
+
+<BaseLayout title={d.title} description={d.description} image={videoThumb(video)}>
+  <article class="narrow">
+    <header class="article-head">
+      <p class="kicker">Video</p>
+      <h1>{d.title}</h1>
+      <div class="byline"><time datetime={isoDate(d.pubDate)}>{formatDate(d.pubDate)}</time>{d.draft && <span class="badge">Draft</span>}</div>
+    </header>
+    <YouTube id={d.youtubeId} title={d.title} thumbnail={videoThumb(video)} />
+    <p class="lede" style="margin-top:1.5rem">{d.description}</p>
+    <div class="prose"><Content /></div>
+    {d.tags.length > 0 && <div class="chip-row" style="margin-top:1.5rem">{d.tags.map((t) => <span class="chip">#{t}</span>)}</div>}
+  </article>
+</BaseLayout>

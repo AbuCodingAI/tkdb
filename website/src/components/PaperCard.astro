@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, isoDate } from '../lib/format';
+interface Props { paper: CollectionEntry<'papers'>; delay?: number }
+const { paper, delay = 0 } = Astro.props;
+const d = paper.data;
+---
+
+<article class="card" style={`animation-delay:${delay}ms`}>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="badge status">{d.status}</span>
+      <time datetime={isoDate(d.pubDate)}>{formatDate(d.pubDate, 'short')}</time>
+      {d.draft && <span class="badge">Draft</span>}
+    </div>
+    <h3><a href={`/papers/${paper.id}/`}>{d.title}</a></h3>
+    <p class="mono" style="font-size:0.82rem">{d.authors.join(', ')}</p>
+    <p>{d.abstract.length > 180 ? d.abstract.slice(0, 177) + '…' : d.abstract}</p>
+  </div>
+</article>

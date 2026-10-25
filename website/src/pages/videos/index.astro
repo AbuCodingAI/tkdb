@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import VideoCard from '../../components/VideoCard.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import { getVideos } from '../../lib/content';
+const videos = await getVideos();
+---
+
+<BaseLayout title="Videos" description="Videos from the TKDB YouTube channel.">
+  <div class="container">
+    <header class="page-head">
+      <p class="kicker">Watch</p>
+      <h1>Videos</h1>
+      <p class="lede">Embedded YouTube videos. Nothing loads from YouTube until you press play.</p>
+    </header>
+    {videos.length ? (
+      <div class="grid">{videos.map((v, i) => <VideoCard video={v} delay={i * 50} />)}</div>
+    ) : (
+      <EmptyState title="No videos yet">Copy <code>src/content/videos/_template.md</code> and add a YouTube ID.</EmptyState>
+    )}
+  </div>
+</BaseLayout>

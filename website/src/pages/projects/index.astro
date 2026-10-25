@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import { getProjects } from '../../lib/content';
+const projects = await getProjects();
+---
+
+<BaseLayout title="Projects" description="Engineering projects with source, docs and status.">
+  <div class="container">
+    <header class="page-head">
+      <p class="kicker">Portfolio</p>
+      <h1>Projects</h1>
+      <p class="lede">Things being built: what they do, what they use, and where they stand.</p>
+    </header>
+    {projects.length ? (
+      <div class="grid">{projects.map((p, i) => <ProjectCard project={p} delay={i * 50} />)}</div>
+    ) : (
+      <EmptyState title="No projects yet">Add one to <code>src/content/projects/</code>.</EmptyState>
+    )}
+  </div>
+</BaseLayout>

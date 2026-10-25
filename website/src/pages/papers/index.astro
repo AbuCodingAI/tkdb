@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PaperCard from '../../components/PaperCard.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import { getPapers } from '../../lib/content';
+const papers = await getPapers();
+---
+
+<BaseLayout title="Papers" description="Original papers with abstracts, authors and PDF downloads.">
+  <div class="container">
+    <header class="page-head">
+      <p class="kicker">Library</p>
+      <h1>Papers</h1>
+      <p class="lede">Original papers with abstracts, authors, dates and downloads.</p>
+    </header>
+    {papers.length ? (
+      <div class="grid">{papers.map((p, i) => <PaperCard paper={p} delay={i * 50} />)}</div>
+    ) : (
+      <EmptyState title="No papers published yet">
+        Nothing is listed here until a real paper is added. Copy <code>src/content/papers/_template.md</code> to start one.
+      </EmptyState>
+    )}
+  </div>
+</BaseLayout>

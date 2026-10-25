@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Cover from './Cover.astro';
+interface Props { project: CollectionEntry<'projects'>; delay?: number }
+const { project, delay = 0 } = Astro.props;
+const d = project.data;
+---
+
+<article class="card" style={`animation-delay:${delay}ms`}>
+  <Cover src={d.cover} alt={d.title} label="</>" />
+  <div class="card-body">
+    <div class="card-meta"><span class="badge status">{d.status.replace('-', ' ')}</span>{d.draft && <span class="badge">Draft</span>}</div>
+    <h3><a href={`/projects/${project.id}/`}>{d.title}</a></h3>
+    <p>{d.description}</p>
+    {d.languages.length > 0 && <div class="chip-row">{d.languages.map((l) => <span class="chip">{l}</span>)}</div>}
+  </div>
+</article>

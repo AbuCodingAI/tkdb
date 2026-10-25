@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import { getBlogs, getPosts, postsForBlog } from '../../lib/content';
+const [blogs, posts] = await Promise.all([getBlogs(), getPosts()]);
+---
+
+<BaseLayout title="Blogs" description="Every blog hosted on TKDB, each with its own feed, topics and style.">
+  <div class="container">
+    <header class="page-head">
+      <p class="kicker">Directory</p>
+      <h1>Blogs</h1>
+      <p class="lede">Independent blogs under one roof. Each has its own feed, categories, tags and RSS.</p>
+    </header>
+    {blogs.length ? (
+      <div class="grid">{blogs.map((b, i) => <BlogCard blog={b} count={postsForBlog(posts, b.id).length} delay={i * 60} />)}</div>
+    ) : (
+      <EmptyState title="No blogs yet">Create one with <code>npm run new:blog</code>.</EmptyState>
+    )}
+  </div>
+</BaseLayout>

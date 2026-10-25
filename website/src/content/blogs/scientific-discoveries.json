@@ -1,0 +1,12 @@
+{
+  "name": "Scientific Discoveries",
+  "description": "Plain-language analysis of new results, with sources you can check.",
+  "tagline": "What the data actually says.",
+  "cover": "/images/covers/science.svg",
+  "coverAlt": "Abstract blue orbits",
+  "accent": "#1c7ed6",
+  "template": "research",
+  "categories": ["Method", "Reading"],
+  "order": 2,
+  "demo": true
+}

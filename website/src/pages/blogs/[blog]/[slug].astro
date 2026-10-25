@@ -1,0 +1,34 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { getPosts, postsForBlog } from '../../../lib/content';
+import { templates } from '../../../lib/templates';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { blog: post.blog.id, slug: post.slug }, props: { post, siblings: postsForBlog(posts, post.blog.id) } }));
+}
+const { post, siblings } = Astro.props;
+const { Content, headings } = await render(post.entry);
+const Template = templates[post.template];
+if (!Template) throw new Error(`Unknown template "${post.template}" for ${post.entry.id}. Register it in src/lib/templates.ts.`);
+const more = siblings.filter((p) => p !== post).slice(0, 2);
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.cover ?? post.blog.data.cover}
+  type="article"
+  publishedTime={post.data.pubDate}
+  rss={{ title: `${post.blog.data.name} — RSS`, href: post.blog.rssUrl }}
+>
+  <Template post={post} headings={headings}><Content /></Template>
+  {more.length > 0 && (
+    <section class="container post-nav" aria-label="More from this blog">
+      <h2 style="font-size:1.3rem">More from {post.blog.data.name}</h2>
+      <div class="grid two">{more.map((p) => <PostCard post={p} showBlog={false} />)}</div>
+    </section>
+  )}
+</BaseLayout>

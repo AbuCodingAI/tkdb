@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Search" description="Search every blog, project, paper and video on TKDB." noindex>
+  <div class="container narrow" style="width:min(100% - 2.5rem, 46rem)">
+    <header class="page-head">
+      <p class="kicker">Search</p>
+      <h1>Find anything</h1>
+    </header>
+    <form class="search-box" role="search" style="max-width:none;margin-top:0" onsubmit="return false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <label class="sr-only" for="q">Search query</label>
+      <input id="q" type="search" placeholder="Type to search…" autocomplete="off" autofocus />
+    </form>
+    <p id="status" class="muted mono" style="font-size:0.85rem;margin-top:1rem" aria-live="polite"></p>
+    <ul id="results" class="result-list"></ul>
+  </div>
+</BaseLayout>
+
+<script>
+  type Item = { type: string; title: string; description: string; url: string; tags: string[] };
+  const input = document.getElementById('q') as HTMLInputElement;
+  const list = document.getElementById('results') as HTMLUListElement;
+  const status = document.getElementById('status') as HTMLElement;
+  let index: Item[] = [];
+
+  const score = (item: Item, terms: string[]) => {
+    const title = item.title.toLowerCase();
+    const rest = `${item.description} ${item.tags.join(' ')}`.toLowerCase();
+    let s = 0;
+    for (const t of terms) {
+      if (title.includes(t)) s += 5 + (title.startsWith(t) ? 2 : 0);
+      else if (rest.includes(t)) s += 1;
+      else return 0; // every word must match somewhere
+    }
+    return s;
+  };
+
+  function render() {
+    const terms = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+    list.replaceChildren();
+    if (!terms.length) { status.textContent = `${index.length} items indexed.`; return; }
+    const hits = index.map((item) => ({ item, s: score(item, terms) })).filter((h) => h.s > 0).sort((a, b) => b.s - a.s).slice(0, 30);
+    status.textContent = hits.length ? `${hits.length} result${hits.length === 1 ? '' : 's'}` : 'No results.';
+    for (const { item } of hits) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.className = 'result'; a.href = item.url;
+      const meta = document.createElement('span'); meta.className = 'meta'; meta.textContent = item.type;
+      const title = document.createElement('div'); const strong = document.createElement('strong'); strong.textContent = item.title; title.append(strong);
+      const p = document.createElement('p'); p.textContent = item.description;
+      a.append(meta, title, p); li.append(a); list.append(li);
+    }
+  }
+
+  input.addEventListener('input', render);
+  input.value = new URLSearchParams(location.search).get('q') ?? '';
+  fetch('/search.json').then((r) => r.json()).then((data) => { index = data; render(); }).catch(() => { status.textContent = 'Search is unavailable right now.'; });
+</script>

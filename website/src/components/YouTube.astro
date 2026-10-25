@@ -1,0 +1,23 @@
+---
+interface Props { id: string; title: string; thumbnail?: string }
+const { id, title, thumbnail = `https://i.ytimg.com/vi/${id}/hqdefault.jpg` } = Astro.props;
+---
+
+<!-- Privacy-friendly: nothing is requested from YouTube until the visitor clicks play. -->
+<div class="yt" data-yt={id}>
+  <button type="button" style={`background-image:url('${thumbnail}')`} aria-label={`Play video: ${title}`}></button>
+</div>
+<p class="yt-note">Clicking play loads the video from YouTube (privacy-enhanced mode).</p>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.yt[data-yt]').forEach((box) => {
+    box.querySelector('button')?.addEventListener('click', () => {
+      const frame = document.createElement('iframe');
+      frame.src = `https://www.youtube-nocookie.com/embed/${box.dataset.yt}?autoplay=1&rel=0`;
+      frame.title = 'YouTube video player';
+      frame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      frame.allowFullscreen = true;
+      box.replaceChildren(frame);
+    });
+  });
+</script>

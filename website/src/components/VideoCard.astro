@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, isoDate } from '../lib/format';
+import { videoThumb } from '../lib/content';
+interface Props { video: CollectionEntry<'videos'>; delay?: number }
+const { video, delay = 0 } = Astro.props;
+const d = video.data;
+---
+
+<article class="card video-card" style={`animation-delay:${delay}ms`}>
+  <div class="thumb"><img class="cover" src={videoThumb(video)} alt="" width="480" height="360" loading="lazy" decoding="async" /></div>
+  <div class="card-body">
+    <div class="card-meta"><time datetime={isoDate(d.pubDate)}>{formatDate(d.pubDate, 'short')}</time>{d.draft && <span class="badge">Draft</span>}</div>
+    <h3><a href={`/videos/${video.id}/`}>{d.title}</a></h3>
+    <p>{d.description}</p>
+  </div>
+</article>

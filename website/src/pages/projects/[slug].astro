@@ -1,0 +1,37 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+const { project } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={d.title} description={d.description} image={d.cover}>
+  <article class="narrow">
+    <header class="article-head">
+      <p class="kicker">Project · {d.status.replace('-', ' ')}</p>
+      <h1>{d.title}</h1>
+      <p class="lede">{d.description}</p>
+      {d.languages.length > 0 && <div class="chip-row">{d.languages.map((l) => <span class="chip">{l}</span>)}</div>}
+      <div class="hero-actions">
+        {d.github && <a class="btn primary" href={d.github} rel="noopener noreferrer">GitHub</a>}
+        {d.docs && <a class="btn" href={d.docs}>Documentation</a>}
+        {d.demo && <a class="btn" href={d.demo} rel="noopener noreferrer">Live demo</a>}
+      </div>
+    </header>
+    {d.gallery.length > 0 && (
+      <div class="gallery">
+        {d.gallery.map((g) => (
+          <figure><img src={g.src} alt={g.alt} loading="lazy" decoding="async" />{g.caption && <figcaption>{g.caption}</figcaption>}</figure>
+        ))}
+      </div>
+    )}
+    <div class="prose"><Content /></div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPapers } from '../../lib/content';
+import { formatDate, isoDate } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const papers = await getPapers();
+  return papers.map((paper) => ({ params: { slug: paper.id }, props: { paper } }));
+}
+const { paper } = Astro.props;
+const d = paper.data;
+const { Content } = await render(paper);
+---
+
+<BaseLayout title={d.title} description={d.abstract.slice(0, 160)}>
+  <article class="narrow">
+    <header class="article-head">
+      <p class="kicker">Paper · {d.status}</p>
+      <h1>{d.title}</h1>
+      <div class="byline">
+        <span>{d.authors.join(', ')}</span>
+        <time datetime={isoDate(d.pubDate)}>{formatDate(d.pubDate)}</time>
+        {d.venue && <span>{d.venue}</span>}
+        {d.draft && <span class="badge">Draft</span>}
+      </div>
+    </header>
+    <section class="abstract" aria-labelledby="abs"><h2 id="abs">Abstract</h2><p>{d.abstract}</p></section>
+    <div class="hero-actions" style="margin-bottom:2rem">
+      {d.pdf && <a class="btn primary" href={d.pdf} download>Download PDF</a>}
+      {d.doi && <a class="btn" href={`https://doi.org/${d.doi}`} rel="noopener noreferrer">DOI: {d.doi}</a>}
+    </div>
+    <div class="prose"><Content /></div>
+  </article>
+</BaseLayout>

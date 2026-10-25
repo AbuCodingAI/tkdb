@@ -1,0 +1,11 @@
+---
+import { slugify } from '../lib/format';
+interface Props { blogUrl: string; tags: string[] }
+const { blogUrl, tags } = Astro.props;
+---
+
+{tags.length > 0 && (
+  <ul class="chip-row" style="list-style:none;padding:0;margin:2rem 0 0" aria-label="Tags">
+    {tags.map((t) => <li><a class="chip" href={`${blogUrl}tags/${slugify(t)}/`}>#{t}</a></li>)}
+  </ul>
+)}

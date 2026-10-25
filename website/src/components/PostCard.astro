@@ -1,0 +1,23 @@
+---
+import type { Post } from '../lib/content';
+import { formatDate, isoDate } from '../lib/format';
+import Cover from './Cover.astro';
+interface Props { post: Post; featured?: boolean; showBlog?: boolean; delay?: number }
+const { post, featured = false, showBlog = true, delay = 0 } = Astro.props;
+const { data, blog } = post;
+---
+
+<article class:list={['card', { featured }]} style={`--card-accent:${blog.data.accent}; animation-delay:${delay}ms`}>
+  <Cover src={data.cover} alt={data.coverAlt} accent={blog.data.accent} label={blog.data.name.slice(0, 2).toUpperCase()} />
+  <div class="card-body">
+    <div class="card-meta">
+      {showBlog && <a class="chip" style={`--chip-accent:${blog.data.accent}`} href={blog.url}><span class="dot"></span>{blog.data.name}</a>}
+      <time datetime={isoDate(data.pubDate)}>{formatDate(data.pubDate, 'short')}</time>
+      <span>{post.minutes} min</span>
+      {post.isDraft && <span class="badge">Draft</span>}
+      {data.demo && <span class="badge demo">Demo</span>}
+    </div>
+    <h3><a href={post.url}>{data.title}</a></h3>
+    <p>{data.description}</p>
+  </div>
+</article>

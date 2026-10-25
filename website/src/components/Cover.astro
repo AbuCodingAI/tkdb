@@ -1,0 +1,10 @@
+---
+interface Props { src?: string; alt?: string; accent?: string; label?: string; class?: string; eager?: boolean }
+const { src, alt = '', accent = '#d9480f', label = 'TKDB', class: cls = '', eager = false } = Astro.props;
+---
+
+{src ? (
+  <img class:list={['cover', cls]} src={src} alt={alt} width="1280" height="720" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+) : (
+  <div class:list={['cover', 'generated', cls]} style={`--cover-accent:${accent}`} aria-hidden="true"><span>{label}</span></div>
+)}

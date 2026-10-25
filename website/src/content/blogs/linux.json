@@ -1,0 +1,12 @@
+{
+  "name": "Linux Internals",
+  "description": "Kernels, filesystems, schedulers and the tools that make Linux tick.",
+  "tagline": "Under the hood of the penguin.",
+  "cover": "/images/covers/linux.svg",
+  "coverAlt": "Abstract terminal-green grid",
+  "accent": "#d9480f",
+  "template": "tutorial",
+  "categories": ["Kernel", "Tooling"],
+  "order": 1,
+  "demo": true
+}

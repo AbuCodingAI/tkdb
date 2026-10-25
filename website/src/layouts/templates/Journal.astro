@@ -1,0 +1,22 @@
+---
+import type { MarkdownHeading } from 'astro';
+import type { Post } from '../../lib/content';
+import PostMeta from '../../components/PostMeta.astro';
+import PostNotices from '../../components/PostNotices.astro';
+import TagRow from '../../components/TagRow.astro';
+import { formatDate } from '../../lib/format';
+interface Props { post: Post; headings: MarkdownHeading[] }
+const { post } = Astro.props;
+const { data, blog } = post;
+---
+
+<article class="narrow journal" style={`--accent:${blog.data.accent}`}>
+  <header class="journal-head">
+    <p class="kicker">{formatDate(data.pubDate)}{data.mood ? ` · feeling ${data.mood}` : ''}</p>
+    <h1>{data.title}</h1>
+    <PostMeta post={post} />
+  </header>
+  <PostNotices post={post} />
+  <div class="prose"><slot /></div>
+  <TagRow blogUrl={blog.url} tags={data.tags} />
+</article>

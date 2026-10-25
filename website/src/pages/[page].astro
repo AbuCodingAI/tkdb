@@ -1,0 +1,22 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPages } from '../lib/content';
+import { formatDate } from '../lib/format';
+
+export async function getStaticPaths() {
+  const pages = await getPages();
+  return pages.map((page) => ({ params: { page: page.id }, props: { page } }));
+}
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<BaseLayout title={page.data.title} description={page.data.description}>
+  <div class="narrow">
+    <header class="page-head"><h1>{page.data.title}</h1>
+      {page.data.updated && <p class="muted mono" style="font-size:0.85rem">Last updated {formatDate(page.data.updated)}</p>}
+    </header>
+    <div class="prose"><Content /></div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import PostCard from '../../../../components/PostCard.astro';
+import { getBlogs, getPosts, postsForBlog, countBy } from '../../../../lib/content';
+import { slugify } from '../../../../lib/format';
+
+export async function getStaticPaths() {
+  const [blogs, posts] = await Promise.all([getBlogs(), getPosts()]);
+  return blogs.flatMap((blog) => {
+    const own = postsForBlog(posts, blog.id);
+    return countBy(own.map((p) => p.data.category).filter((c): c is string => !!c)).map((c) => ({
+      params: { blog: blog.id, category: c.slug },
+      props: { blog, label: c.label, posts: own.filter((p) => p.data.category && slugify(p.data.category) === c.slug) },
+    }));
+  });
+}
+const { blog, label, posts } = Astro.props;
+---
+
+<BaseLayout title={`${label} · ${blog.data.name}`} description={`${label} posts in ${blog.data.name}.`}>
+  <div class="container">
+    <header class="page-head">
+      <p class="kicker"><a href={blog.url} style="color:inherit">{blog.data.name}</a> · category</p>
+      <h1>{label}</h1>
+    </header>
+    <div class="grid two">{posts.map((p, i) => <PostCard post={p} showBlog={false} delay={i * 50} />)}</div>
+  </div>
+</BaseLayout>

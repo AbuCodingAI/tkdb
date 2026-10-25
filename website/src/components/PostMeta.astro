@@ -1,0 +1,19 @@
+---
+import type { Post } from '../lib/content';
+import { formatDate, isoDate } from '../lib/format';
+import { SITE } from '../config';
+interface Props { post: Post }
+const { post } = Astro.props;
+const { data, blog } = post;
+const author = data.author ?? blog.data.author ?? SITE.author.name;
+---
+
+<div class="byline">
+  <a class="chip" style={`--chip-accent:${blog.data.accent}`} href={blog.url}><span class="dot"></span>{blog.data.name}</a>
+  <span>By {author}</span>
+  <time datetime={isoDate(data.pubDate)}>{formatDate(data.pubDate)}</time>
+  {data.updatedDate && <span>Updated {formatDate(data.updatedDate)}</span>}
+  <span>{post.minutes} min read</span>
+  {post.isDraft && <span class="badge">Draft</span>}
+  {data.demo && <span class="badge demo">Demo</span>}
+</div>

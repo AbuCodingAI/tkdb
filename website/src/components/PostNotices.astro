@@ -1,0 +1,8 @@
+---
+import type { Post } from '../lib/content';
+interface Props { post: Post }
+const { post } = Astro.props;
+---
+
+{post.isDraft && <p class="notice draft"><strong>Draft.</strong> Only visible in local preview. This post is removed from production builds, search, RSS and the sitemap.</p>}
+{post.data.demo && <p class="notice"><strong>Demonstration post.</strong> Placeholder content for testing this layout. It is not a real article.</p>}

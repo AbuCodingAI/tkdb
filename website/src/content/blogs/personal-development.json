@@ -1,0 +1,12 @@
+{
+  "name": "Personal Development",
+  "description": "Short, honest notes on habits, learning and building a sustainable routine.",
+  "tagline": "Small steps, written down.",
+  "cover": "/images/covers/personal.svg",
+  "coverAlt": "Abstract green hills",
+  "accent": "#2f9e44",
+  "template": "journal",
+  "categories": ["Habits", "Learning"],
+  "order": 3,
+  "demo": true
+}

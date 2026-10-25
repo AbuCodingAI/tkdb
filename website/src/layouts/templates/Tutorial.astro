@@ -1,0 +1,33 @@
+---
+import type { MarkdownHeading } from 'astro';
+import type { Post } from '../../lib/content';
+import Cover from '../../components/Cover.astro';
+import PostMeta from '../../components/PostMeta.astro';
+import PostNotices from '../../components/PostNotices.astro';
+import TagRow from '../../components/TagRow.astro';
+import Toc from '../../components/Toc.astro';
+interface Props { post: Post; headings: MarkdownHeading[] }
+const { post, headings } = Astro.props;
+const { data, blog } = post;
+---
+
+<article class="container" style={`--accent:${blog.data.accent}`}>
+  <header class="article-head" style="width:min(100%,50rem)">
+    <p class="kicker">Tutorial{data.difficulty ? ` · ${data.difficulty}` : ''}</p>
+    <h1>{data.title}</h1>
+    <p class="lede">{data.description}</p>
+    <PostMeta post={post} />
+  </header>
+  <PostNotices post={post} />
+  {data.cover && <Cover class="article-cover" src={data.cover} alt={data.coverAlt} eager />}
+  <div class="layout-2" style="padding-top:0">
+    <div>
+      {data.prerequisites.length > 0 && (
+        <div class="callout"><strong>Before you start</strong><ul>{data.prerequisites.map((p) => <li>{p}</li>)}</ul></div>
+      )}
+      <div class="prose"><slot /></div>
+      <TagRow blogUrl={blog.url} tags={data.tags} />
+    </div>
+    <aside class="sidebar" style="position:sticky;top:5.5rem;align-self:start"><Toc headings={headings} /></aside>
+  </div>
+</article>

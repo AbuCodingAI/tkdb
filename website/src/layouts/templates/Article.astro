@@ -1,0 +1,23 @@
+---
+import type { MarkdownHeading } from 'astro';
+import type { Post } from '../../lib/content';
+import Cover from '../../components/Cover.astro';
+import PostMeta from '../../components/PostMeta.astro';
+import PostNotices from '../../components/PostNotices.astro';
+import TagRow from '../../components/TagRow.astro';
+interface Props { post: Post; headings: MarkdownHeading[] }
+const { post } = Astro.props;
+const { data, blog } = post;
+---
+
+<article class="narrow" style={`--accent:${blog.data.accent}`}>
+  <header class="article-head">
+    <h1>{data.title}</h1>
+    <p class="lede">{data.description}</p>
+    <PostMeta post={post} />
+  </header>
+  <PostNotices post={post} />
+  {data.cover && <Cover class="article-cover" src={data.cover} alt={data.coverAlt} eager />}
+  <div class="prose"><slot /></div>
+  <TagRow blogUrl={blog.url} tags={data.tags} />
+</article>

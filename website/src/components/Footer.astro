@@ -1,0 +1,37 @@
+---
+import { SITE } from '../config';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">T</span><span>{SITE.name}</span></a>
+        <p style="margin-top:0.8rem">{SITE.tagline}</p>
+      </div>
+      <nav aria-label="Explore">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="/blogs/">Blogs</a></li>
+          <li><a href="/papers/">Papers</a></li>
+          <li><a href="/projects/">Projects</a></li>
+          <li><a href="/videos/">Videos</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="More">
+        <h2>More</h2>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/rss.xml">RSS</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© {year} {SITE.name}. All rights reserved.</span>
+      <span class="mono">No ads · No trackers</span>
+    </div>
+  </div>
+</footer>
