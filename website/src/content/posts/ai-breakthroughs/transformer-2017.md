@@ -14,7 +14,7 @@ tags:
   - attention
   - machine-translation
   - retrospective
-  - independently-replicated
+  - peer-reviewed
 author: TKDB Newsroom (AI-assisted)
 abstract: In 2017 eight researchers working at Google proposed the Transformer,
   a translation model built from attention layers with no recurrent or
@@ -51,7 +51,7 @@ review:
   agent: newsroom-poc2
 ---
 
-Status: Independently replicated · AI-assisted reporting, human-reviewed before publication
+Status: Peer-reviewed (an independent lab reproduced its accuracy) · AI-assisted reporting, passed the newsroom's automated quality gates (not reviewed by a human editor)
 
 ## Key Findings
 

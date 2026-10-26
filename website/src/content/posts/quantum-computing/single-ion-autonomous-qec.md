@@ -14,7 +14,7 @@ tags:
   - quantum-error-correction
   - trapped-ions
   - quantum-memory
-  - peer-reviewed
+  - disputed
 author: TKDB Newsroom (AI-assisted)
 abstract: In a Nature Physics paper published on 23 October 2026, researchers at
   the University of Science and Technology of China report a logical qubit
@@ -51,7 +51,7 @@ review:
   agent: newsroom-poc
 ---
 
-Status: Peer-reviewed · AI-assisted reporting, human-reviewed before publication
+Status: Disputed (peer-reviewed, but another group contests the break-even baseline) · AI-assisted reporting, passed the newsroom's automated quality gates (not reviewed by a human editor)
 
 ## Key Findings
 
