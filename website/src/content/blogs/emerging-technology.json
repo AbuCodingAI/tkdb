@@ -5,5 +5,5 @@
   "template": "research",
   "categories": ["Computing", "Energy", "Robotics"],
   "order": 12,
-  "published": false
+  "published": true
 }
