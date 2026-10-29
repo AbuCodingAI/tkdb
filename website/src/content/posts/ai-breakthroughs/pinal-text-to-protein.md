@@ -1,0 +1,95 @@
+---
+title: An AI model turns plain-language requests into working proteins, with caveats
+description: Westlake University's Pinal designs candidate proteins from a
+  written description of what they should do. Lab tests found working designs
+  for four tasks, but hit rates for the hardest ones were low and expert
+  filtering still played a role.
+pubDate: 2026-10-27
+draft: false
+demo: false
+category: AI breakthroughs
+tags:
+  - protein-design
+  - generative-ai
+  - biology
+  - peer-reviewed
+author: TKDB Newsroom (AI-assisted)
+abstract: In a Nature paper published on 21 October 2026, a team led by Westlake
+  University introduced Pinal, a 16-billion-parameter model that proposes
+  protein sequences from a plain-language description of the function you want.
+  The team tested designs for four jobs in the lab, a fluorescent protein, a
+  plastic-degrading enzyme, an alcohol dehydrogenase and a metabolic H-protein,
+  and found at least one working design for each. One designed H-protein raised
+  output 1.7-fold in a carbon-fixation pathway. The published referee reports
+  show the original demonstrations leaned on expert filtering, and the revised
+  experiments for the hardest targets found one active design among dozens
+  tested. Nobody has independently reproduced the lab results yet.
+sources:
+  - title: Programmable design of functional proteins from natural language (Nature)
+    url: https://www.nature.com/articles/s41586-026-11205-z
+  - title: Toward De Novo Protein Design from Natural Language (bioRxiv preprint)
+    url: https://doi.org/10.1101/2024.08.01.606258
+  - title: Researchers Develop AI Model That Designs Proteins From Plain-Language
+      Descriptions (Westlake University news)
+    url: https://en.westlake.edu.cn/news_events/westlakenews/research/202610/t20261023_70614.html
+  - title: Peer Review File for 'Programmable Design of Functional Proteins from
+      Natural Language' (Nature)
+    url: https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41586-026-11205-z/MediaObjects/41586_2026_11205_MOESM3_ESM.pdf
+  - title: westlake-repl/Denovo-Pinal (GitHub repository)
+    url: https://github.com/westlake-repl/Denovo-Pinal
+  - title: Westlake Team Says Its Pinal AI Designs Working Proteins From Text (TSN)
+    url: https://tsnmedia.org/westlake-pinal-protein-design-text/
+review:
+  status: approved
+  source: agent
+  agent: tkdb-newsroom-daily
+---
+
+# An AI model turns plain-language requests into working proteins, with caveats
+
+Status: Peer-reviewed · AI-assisted reporting, passed the newsroom's automated quality gates (not reviewed by a human editor)
+
+## Key Findings
+
+Designing a new protein usually means starting from a natural one or spelling out the shape and key residues you need. A team led by Fajie Yuan at Westlake University in Hangzhou wants to replace much of that with a sentence. Their model, Pinal, takes a plain-language description of a function and proposes candidate protein sequences. The work was peer-reviewed and published in *Nature* on 21 October 2026 [S1], following a bioRxiv preprint in August 2024 [S2].
+
+- **Scale.** Pinal has 16 billion parameters and was trained on 1.7 billion protein-text pairs, most with machine-generated descriptions [S1][S3].
+- **Four lab tests, four working results.** The team asked for a fluorescent protein, an enzyme that breaks down PET plastic, an alcohol dehydrogenase and a metabolic H-protein, and observed the intended function in each case, including catalytic activity for both enzymes [S1].
+- **One design beat nature, modestly.** Swapping a Pinal-designed H-protein into a multi-enzyme pathway that fixes carbon dioxide raised product titre 1.7-fold compared with the native *E. coli* protein, with no rounds of lab optimization [S1][S3].
+- **Hit rates were low for the hard targets.** According to the authors' replies in the published peer review file, the revised fluorescent-protein test found 1 glowing design among 29 tested, and the revised PET-enzyme test found 1 active design among 94 tested, each picked from thousands of generated sequences. For the H-protein, 5 of 20 designs were active [S4].
+
+**What is established:** the paper passed peer review at *Nature*, and the referee reports are public [S4]. The lab results have not been independently replicated. One referee re-ran Pinal's software and examined its outputs, but that was a computational check, not a new experiment [S4].
+
+## How It Works
+
+1. **Text to structure.** A first module reads the description and writes out a protein's 3D shape as a string of structural tokens, a compact alphabet from a tool called Foldseek [S1][S4].
+2. **Structure plus text to sequence.** A second module, SaProt-T, turns the structural tokens and the same description into an amino-acid sequence [S1][S4].
+3. **Training data.** The team gathered about 135 million distinct protein sequences. A small share had expert-written annotations, and the rest got descriptions generated by the team's earlier models, giving about 1.7 billion protein-text pairs [S3].
+4. **Generate, filter, test.** For each task Pinal produced a large pool of candidates. The team ranked them by predicted folding quality and by how well each matched the prompt, then synthesized a few dozen for lab tests [S1][S4]. For the fluorescent protein, they also kept only candidates that already contained a known glow-forming motif [S4].
+
+The weights, inference code and a web server are public under an Apache 2.0 licence [S1][S5]. The training scripts and full training data are not, which one referee noted while confirming that the inference code runs [S4]. TSN reported that the corpus was withheld for biosecurity reasons [S6].
+
+## Implications
+
+If text prompts reliably produce working proteins, enzyme design for industrial chemistry or carbon capture could start from a goal rather than a template. The H-protein result is the most interesting: that protein has to work with several partners in a pathway, and the designed version improved the whole pathway on the first try [S1][S4].
+
+The referee reports temper that picture. One referee said the paper "failed to live up to the expectations set in the abstract" because the original fluorescent-protein and PET-enzyme results relied on experts grafting or filtering for key motifs, and called the authors' original framing of the under-2-fold gain "overblown" [S4]. The authors added new experiments with less hand-holding and narrowed their claims, removing that framing; the same referee then recommended publication [S4]. A coverage piece put it plainly: "Those are four examples, not a success rate" [S6]. The university itself says "Experimental screening and validation remain essential" [S3].
+
+**Impact:** medium to high if it generalizes, since it changes the starting point of protein design, but today it is four task-specific demonstrations. **Confidence:** medium. Peer review with detailed public referee reports supports the core results, but the main text is paywalled for us, the hit-rate numbers come from the authors' rebuttal, and no outside lab has repeated the experiments. These are separate judgments.
+
+## Open Questions
+
+- **Independent replication.** We found no outside lab that has tested Pinal designs. The public weights make that possible.
+- **Success rates.** One active design in 29 or 94 tests means screening still does most of the work for hard targets [S4]. How often does a prompt yield something useful across many functions?
+- **How much expertise is still needed?** The authors now describe Pinal as lowering the barrier at the generation stage, not removing the need for domain knowledge in choosing what to test [S4].
+- **Is the two-step design necessary?** A referee argued that direct text-to-sequence models can be competitive and asked for stronger baselines; that debate was not settled in the review [S4].
+- **Self-referential scoring.** The same matching model, ProTrek, helped build the training data and score the outputs, which a referee flagged as a possible bias in the computational benchmarks [S4].
+
+## References
+
+1. [S1] Dai, F., You, S., Zhu, Y. *et al.* "Programmable design of functional proteins from natural language." *Nature* (published 21 October 2026; received 13 September 2025, accepted 23 September 2026). https://www.nature.com/articles/s41586-026-11205-z. Abstract, figure captions and availability statements read; main text paywalled.
+2. [S2] Dai, F. *et al.* "Toward De Novo Protein Design from Natural Language." bioRxiv (2 August 2024). https://doi.org/10.1101/2024.08.01.606258. Preprint by the same team; not independent of S1.
+3. [S3] Westlake University. "Researchers Develop AI Model That Designs Proteins From Plain-Language Descriptions" (October 2026). https://en.westlake.edu.cn/news_events/westlakenews/research/202610/t20261023_70614.html. Press release; not independent of S1.
+4. [S4] *Nature*. Peer Review File for "Programmable Design of Functional Proteins from Natural Language" (21 October 2026). https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41586-026-11205-z/MediaObjects/41586_2026_11205_MOESM3_ESM.pdf. Anonymous independent referee reports and the authors' rebuttals.
+5. [S5] Westlake team. "Denovo-Pinal" code repository, GitHub. https://github.com/westlake-repl/Denovo-Pinal. Same origin as S1.
+6. [S6] TSN. "Westlake Team Says Its Pinal AI Designs Working Proteins From Text" (22 October 2026). https://tsnmedia.org/westlake-pinal-protein-design-text/. News coverage of S1; no outside expert quoted.
