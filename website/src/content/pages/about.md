@@ -13,7 +13,7 @@ I'm Abu, the person behind TKDB. I'm a Linux user and builder: I started on Ubun
 
 **The news articles on TKDB are fully AI generated.** The daily science and technology stories are researched, written and fact-checked by an AI system, and every one is labelled that way. I don't write them.
 
-**The Linux Internals blog is written by me and refined with AI.** The ideas, experience and drafts are mine, and AI helps me tidy the writing. The same goes for everything else on TKDB that isn't a daily news article, including my videos starting in November. TKDB is independent: I make it, and I decide what goes on it. If you spot a mistake, please tell me.
+**The Linux Internals blog is written by me and refined with AI.** The ideas, experience and drafts are mine, and AI helps me tidy the writing. Any other written posts that aren't daily news articles work the same way. My videos, starting in November, are my own. TKDB is independent: I make it, and I decide what goes on it. If you spot a mistake, please tell me.
 
 ## What you will find here
 
