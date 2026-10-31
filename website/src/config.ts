@@ -13,8 +13,8 @@ export const SITE = {
 
   /** EDIT: placeholder creator details used on the About page, bylines and structured data. */
   author: {
-    name: 'Your Name',
-    bio: 'Short bio goes here. Edit it in src/config.ts.',
+    name: 'Abu',
+    bio: 'Linux user and builder (Ubuntu since March, Arch since last month). Writes the Linux Internals series and publishes labelled, AI-assisted daily stories on TKDB.',
     email: '',
     links: {
       github: '',
