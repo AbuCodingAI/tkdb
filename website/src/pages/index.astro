@@ -11,9 +11,13 @@ import { SITE } from '../config';
 import { getBlogs, getPosts, getProjects, getPapers, getVideos, postsForBlog } from '../lib/content';
 
 const [blogs, posts, projects, papers, videos] = await Promise.all([getBlogs(), getPosts(), getProjects(), getPapers(), getVideos()]);
-const featuredList = posts.filter((p) => p.data.featured || p.slug === p.blog.data.featured);
-const featured = (featuredList.length ? featuredList : posts).slice(0, 3);
-const latest = posts.filter((p) => !featured.includes(p)).slice(0, 6);
+// Featured: the "10 files" Linux post (falls back to the newest post). Same lead story as the Blogs page.
+const lead = posts.find((p) => p.url.includes('inside-linux-10-files')) ?? posts[0];
+const featured = lead ? [lead] : [];
+// Latest: the newest story from each of up to 6 different blogs, not the featured blog.
+const seen = new Set(lead ? [lead.blog.id] : []);
+const latest = [];
+for (const p of posts) { if (latest.length < 6 && p !== lead && !seen.has(p.blog.id)) { seen.add(p.blog.id); latest.push(p); } }
 ---
 
 <BaseLayout>
