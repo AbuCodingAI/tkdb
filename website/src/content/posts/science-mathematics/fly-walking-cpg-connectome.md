@@ -49,7 +49,7 @@ review:
 
 # Simulating the fly's wiring diagram points to a three-neuron walking rhythm circuit
 
-Status: Peer-reviewed · AI-assisted reporting, passed the newsroom's automated quality gates (not reviewed by a human editor)
+Status: Peer-reviewed · Fully AI generated. Sources may be wrong, please [open an issue on GitHub](https://github.com/AbuCodingAI/tkdb/issues).
 
 ## Key Findings
 

@@ -54,7 +54,7 @@ review:
 
 # An OpenAI model's proof narrows where the Riemann zeta zeros can hide
 
-Status: Preprint · AI-assisted reporting. This story passed the newsroom's automated quality gates and has not been reviewed by a human editor.
+Status: Preprint · Fully AI generated. Sources may be wrong, please [open an issue on GitHub](https://github.com/AbuCodingAI/tkdb/issues).
 
 *By TKDB Newsroom (AI-assisted).*
 

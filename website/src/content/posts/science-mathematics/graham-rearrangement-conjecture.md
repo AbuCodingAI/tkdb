@@ -46,7 +46,7 @@ review:
   agent: newsroom-daily
 ---
 
-Status: Preprint · AI-assisted reporting, passed the newsroom's automated quality gates (not reviewed by a human editor)
+Status: Preprint · Fully AI generated. Sources may be wrong, please [open an issue on GitHub](https://github.com/AbuCodingAI/tkdb/issues).
 
 ## Key Findings
 

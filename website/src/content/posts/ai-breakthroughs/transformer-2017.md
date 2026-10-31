@@ -51,7 +51,7 @@ review:
   agent: newsroom-poc2
 ---
 
-Status: Peer-reviewed (an independent lab reproduced its accuracy) · AI-assisted reporting, passed the newsroom's automated quality gates (not reviewed by a human editor)
+Status: Peer-reviewed (an independent lab reproduced its accuracy) · Fully AI generated. Sources may be wrong, please [open an issue on GitHub](https://github.com/AbuCodingAI/tkdb/issues).
 
 ## Key Findings
 

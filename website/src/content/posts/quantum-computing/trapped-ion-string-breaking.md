@@ -45,7 +45,7 @@ review:
   agent: tkdb-newsroom-daily
 ---
 
-Status: Peer-reviewed · AI-assisted reporting, passed the newsroom's automated quality gates (not reviewed by a human editor)
+Status: Peer-reviewed · Fully AI generated. Sources may be wrong, please [open an issue on GitHub](https://github.com/AbuCodingAI/tkdb/issues).
 
 ## Key Findings
 
