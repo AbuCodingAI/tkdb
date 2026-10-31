@@ -1,22 +1,45 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import PostCard from '../../components/PostCard.astro';
+import SectionHead from '../../components/SectionHead.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import { getBlogs, getPosts, postsForBlog } from '../../lib/content';
 const [blogs, posts] = await Promise.all([getBlogs(), getPosts()]);
+// getPosts() is already sorted newest first.
+const [lead, ...rest] = posts;
+const more = rest.slice(0, 9);
 ---
 
-<BaseLayout title="Blogs" description="Every blog hosted on TKDB, each with its own feed, topics and style.">
+<BaseLayout title="Blogs" description="The latest stories on TKDB, and every blog hosted here.">
   <div class="container">
     <header class="page-head">
-      <p class="kicker">Directory</p>
+      <p class="kicker">Latest</p>
       <h1>Blogs</h1>
-      <p class="lede">Independent blogs under one roof. Each has its own feed, categories, tags and RSS.</p>
     </header>
-    {blogs.length ? (
-      <div class="grid">{blogs.map((b, i) => <BlogCard blog={b} count={postsForBlog(posts, b.id).length} delay={i * 60} />)}</div>
-    ) : (
-      <EmptyState title="No blogs yet">Create one with <code>npm run new:blog</code>.</EmptyState>
+
+    {lead && (
+      <section aria-labelledby="top-story-h">
+        <h2 id="top-story-h" class="sr-only">Top story</h2>
+        <div class="grid two"><PostCard post={lead} featured={true} /></div>
+      </section>
     )}
+
+    {more.length > 0 && (
+      <section class="section" aria-labelledby="more-stories-h">
+        <SectionHead id="more-stories-h" title="More stories" />
+        <div class="grid">{more.map((p, i) => <PostCard post={p} delay={i * 50} />)}</div>
+      </section>
+    )}
+
+    <section class="section" aria-labelledby="all-blogs-h">
+      <SectionHead id="all-blogs-h" title="All blogs" />
+      <p class="lede">Independent blogs under one roof. Each has its own feed, categories, tags and RSS.</p>
+      {blogs.length ? (
+        <div class="grid">{blogs.map((b, i) => <BlogCard blog={b} count={postsForBlog(posts, b.id).length} delay={i * 60} />)}</div>
+      ) : (
+        <EmptyState title="No blogs yet">Create one with <code>npm run new:blog</code>.</EmptyState>
+      )}
+    </section>
   </div>
 </BaseLayout>
