@@ -3,7 +3,12 @@
   "description": "Carefully verified reporting on major AI results: what was shown, what was only claimed, and what is still open.",
   "accent": "#7048e8",
   "template": "research",
-  "categories": ["Capabilities", "Safety"],
+  "categories": [
+    "Capabilities",
+    "Safety"
+  ],
   "order": 10,
-  "published": true
+  "published": true,
+  "cover": "/images/covers/ai-breakthroughs.svg",
+  "coverAlt": "A computer chip with circuit routes leaving it"
 }

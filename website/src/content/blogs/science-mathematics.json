@@ -3,7 +3,13 @@
   "description": "Significant results in mathematics, physics, chemistry, biology and space science, with their evidence trail.",
   "accent": "#1c7ed6",
   "template": "research",
-  "categories": ["Mathematics", "Physics", "Biology"],
+  "categories": [
+    "Mathematics",
+    "Physics",
+    "Biology"
+  ],
   "order": 11,
-  "published": true
+  "published": true,
+  "cover": "/images/covers/science-mathematics.svg",
+  "coverAlt": "A microscope"
 }

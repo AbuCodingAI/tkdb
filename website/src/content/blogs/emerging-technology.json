@@ -3,7 +3,13 @@
   "description": "Chips, computing systems, robotics, energy and engineering advances, separated from marketing.",
   "accent": "#e67700",
   "template": "research",
-  "categories": ["Computing", "Energy", "Robotics"],
+  "categories": [
+    "Computing",
+    "Energy",
+    "Robotics"
+  ],
   "order": 12,
-  "published": true
+  "published": true,
+  "cover": "/images/covers/emerging-technology.svg",
+  "coverAlt": "A glowing lightbulb"
 }
