@@ -8,5 +8,5 @@
   "template": "tutorial",
   "categories": ["Kernel", "Tooling"],
   "order": 1,
-  "demo": true
+  "demo": false
 }
