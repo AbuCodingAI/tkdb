@@ -8,7 +8,11 @@ import { getBlogs, getPosts, postsForBlog } from '../../lib/content';
 const [blogs, posts] = await Promise.all([getBlogs(), getPosts()]);
 // getPosts() is already sorted newest first.
 const [lead, ...rest] = posts;
-const more = rest.slice(0, 9);
+// 3 stories from different blogs (and not the top story's blog), newest first; fill up if there are too few blogs.
+const seen = new Set(lead ? [lead.blog.id] : []);
+const more = [];
+for (const p of rest) { if (more.length < 3 && !seen.has(p.blog.id)) { seen.add(p.blog.id); more.push(p); } }
+for (const p of rest) { if (more.length < 3 && !more.includes(p)) more.push(p); }
 ---
 
 <BaseLayout title="Blogs" description="The latest stories on TKDB, and every blog hosted here.">
@@ -17,6 +21,11 @@ const more = rest.slice(0, 9);
       <p class="kicker">Latest</p>
       <h1>Blogs</h1>
     </header>
+
+    <section class="section" aria-labelledby="pinned-h" data-saved-section hidden>
+      <SectionHead id="pinned-h" title="Your pinned articles" href="/saved/" linkText="All saved →" />
+      <div class="grid" data-saved-list="pin"></div>
+    </section>
 
     {lead && (
       <section aria-labelledby="top-story-h">

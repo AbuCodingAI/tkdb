@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SavedScript from '../components/SavedScript.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -27,5 +28,6 @@ interface Props {
       <slot />
     </main>
     <Footer />
+    <SavedScript />
   </body>
 </html>

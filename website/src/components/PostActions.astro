@@ -1,0 +1,21 @@
+---
+interface Props { url: string; title: string; description?: string; compact?: boolean }
+const { url, title, description = '', compact = false } = Astro.props;
+---
+
+<div class:list={['post-actions', { compact }]} data-url={url} data-title={title} data-text={description}>
+  <button type="button" class="act" data-fav aria-pressed="false" aria-label="Favorite this article" title="Favorite">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+    {!compact && <span class="act-label">Favorite</span>}
+  </button>
+  <button type="button" class="act" data-pin aria-pressed="false" aria-label="Pin this article" title="Pin">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"/><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"/></svg>
+    {!compact && <span class="act-label">Pin</span>}
+  </button>
+  {!compact && (
+    <button type="button" class="act" data-share aria-label="Share this article" title="Share">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
+      <span class="act-label">Share</span>
+    </button>
+  )}
+</div>

@@ -1,0 +1,118 @@
+---
+---
+
+<div class="toast" role="status" aria-live="polite" hidden></div>
+
+<script is:inline>
+(function () {
+  var KEY = 'tkdb-saved';
+  var state = { fav: [], pin: [] };
+  var ICON_FAV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+  var ICON_PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"/><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"/></svg>';
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY) || '{}');
+      state.fav = Array.isArray(s.fav) ? s.fav : [];
+      state.pin = Array.isArray(s.pin) ? s.pin : [];
+    } catch (e) {}
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function toast(msg) {
+    var t = document.querySelector('.toast'); if (!t) return;
+    t.textContent = msg; t.hidden = false; t.classList.add('show');
+    clearTimeout(toast.id);
+    toast.id = setTimeout(function () { t.classList.remove('show'); t.hidden = true; }, 2200);
+  }
+  function has(kind, url) { return state[kind].indexOf(url) !== -1; }
+  function refresh() {
+    document.querySelectorAll('.post-actions').forEach(function (box) {
+      var url = box.getAttribute('data-url');
+      var f = box.querySelector('[data-fav]'), p = box.querySelector('[data-pin]');
+      if (f) {
+        f.setAttribute('aria-pressed', has('fav', url));
+        var fl = f.querySelector('.act-label'); if (fl) fl.textContent = has('fav', url) ? 'Favorited' : 'Favorite';
+      }
+      if (p) {
+        p.setAttribute('aria-pressed', has('pin', url));
+        var pl = p.querySelector('.act-label'); if (pl) pl.textContent = has('pin', url) ? 'Pinned' : 'Pin';
+      }
+    });
+    document.querySelectorAll('[data-saved-count]').forEach(function (el) {
+      var n = state.fav.length + state.pin.filter(function (u) { return state.fav.indexOf(u) === -1; }).length;
+      el.textContent = n; el.hidden = n === 0;
+    });
+  }
+  function toggle(kind, url) {
+    var i = state[kind].indexOf(url);
+    if (i === -1) state[kind].push(url); else state[kind].splice(i, 1);
+    save(); refresh(); renderLists();
+    return i === -1;
+  }
+  function share(box) {
+    var url = new URL(box.getAttribute('data-url'), location.origin).href;
+    var data = { title: box.getAttribute('data-title'), text: box.getAttribute('data-text') || '', url: url };
+    if (navigator.share) { navigator.share(data).catch(function () {}); return; }
+    function fallback() { toast('Could not copy. Copy the address bar instead.'); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function () { toast('Link copied'); }, fallback);
+    else fallback();
+  }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.post-actions button'); if (!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    var box = btn.closest('.post-actions'), url = box.getAttribute('data-url');
+    if (btn.hasAttribute('data-fav')) toast(toggle('fav', url) ? 'Added to favorites' : 'Removed from favorites');
+    else if (btn.hasAttribute('data-pin')) toast(toggle('pin', url) ? 'Pinned' : 'Unpinned');
+    else if (btn.hasAttribute('data-share')) share(box);
+  });
+
+  // Saved lists: containers with data-saved-list="fav" or "pin" are filled from /posts.json.
+  var index = null;
+  function card(p) {
+    var a = document.createElement('article'); a.className = 'card'; a.style.setProperty('--card-accent', p.accent);
+    var body = document.createElement('div'); body.className = 'card-body';
+    var meta = document.createElement('div'); meta.className = 'card-meta';
+    var chip = document.createElement('span'); chip.className = 'chip'; chip.style.setProperty('--chip-accent', p.accent);
+    var dot = document.createElement('span'); dot.className = 'dot';
+    chip.appendChild(dot); chip.appendChild(document.createTextNode(p.blog));
+    var d = document.createElement('span'); d.textContent = p.date;
+    var m = document.createElement('span'); m.textContent = p.minutes + ' min';
+    meta.appendChild(chip); meta.appendChild(d); meta.appendChild(m);
+    var h = document.createElement('h3'); var l = document.createElement('a'); l.href = p.url; l.textContent = p.title; h.appendChild(l);
+    var para = document.createElement('p'); para.textContent = p.description;
+    var acts = document.createElement('div'); acts.className = 'post-actions compact card-actions'; acts.setAttribute('data-url', p.url);
+    acts.innerHTML = '<button type="button" class="act" data-fav aria-pressed="false" aria-label="Favorite this article" title="Favorite">' + ICON_FAV + '</button><button type="button" class="act" data-pin aria-pressed="false" aria-label="Pin this article" title="Pin">' + ICON_PIN + '</button>';
+    body.appendChild(meta); body.appendChild(h); body.appendChild(para);
+    a.appendChild(body); a.appendChild(acts); return a;
+  }
+  function renderLists() {
+    var holders = document.querySelectorAll('[data-saved-list]'); if (!holders.length) return;
+    function paint() {
+      holders.forEach(function (box) {
+        var kind = box.getAttribute('data-saved-list');
+        var urls = state[kind].slice().reverse();
+        var items = urls.map(function (u) { return index.filter(function (p) { return p.url === u; })[0]; }).filter(Boolean);
+        box.innerHTML = '';
+        items.forEach(function (p) { box.appendChild(card(p)); });
+        var section = box.closest('[data-saved-section]'); if (section) section.hidden = items.length === 0;
+        var empty = document.querySelector('[data-saved-empty="' + kind + '"]'); if (empty) empty.hidden = items.length !== 0;
+      });
+      refresh();
+    }
+    if (index) { paint(); return; }
+    fetch('/posts.json').then(function (r) { return r.json(); }).then(function (j) { index = j; paint(); }).catch(function () {});
+  }
+
+  // Reading progress bar on article pages.
+  var bar = document.querySelector('[data-read-progress]');
+  if (bar) {
+    var tick = function () {
+      var h = document.documentElement; var max = h.scrollHeight - h.clientHeight;
+      bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, h.scrollTop / max) : 0) + ')';
+    };
+    window.addEventListener('scroll', tick, { passive: true }); tick();
+  }
+
+  load(); refresh(); renderLists();
+  window.addEventListener('storage', function () { load(); refresh(); renderLists(); });
+})();
+</script>

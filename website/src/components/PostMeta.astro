@@ -2,6 +2,7 @@
 import type { Post } from '../lib/content';
 import { formatDate, isoDate } from '../lib/format';
 import { SITE } from '../config';
+import PostActions from './PostActions.astro';
 interface Props { post: Post }
 const { post } = Astro.props;
 const { data, blog } = post;
@@ -17,3 +18,5 @@ const author = data.author ?? blog.data.author ?? SITE.author.name;
   {post.isDraft && <span class="badge">Draft</span>}
   {data.demo && <span class="badge demo">Demo</span>}
 </div>
+<PostActions url={post.url} title={data.title} description={data.description} />
+<div class="read-progress" data-read-progress aria-hidden="true"></div>

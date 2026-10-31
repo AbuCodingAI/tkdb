@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHead from '../components/SectionHead.astro';
+---
+
+<BaseLayout title="Saved" description="Your pinned and favorite articles, stored in this browser." noindex={true}>
+  <div class="container">
+    <header class="page-head">
+      <p class="kicker">Your library</p>
+      <h1>Saved</h1>
+      <p class="lede">Your pins and favorites. They are stored only in this browser, on this device, and never sent anywhere.</p>
+    </header>
+
+    <section class="section" aria-labelledby="pins-h">
+      <SectionHead id="pins-h" title="Pinned" />
+      <div class="grid" data-saved-list="pin"></div>
+      <p class="saved-empty" data-saved-empty="pin">Nothing pinned yet. Use the pin button on any article.</p>
+    </section>
+
+    <section class="section" aria-labelledby="favs-h">
+      <SectionHead id="favs-h" title="Favorites" />
+      <div class="grid" data-saved-list="fav"></div>
+      <p class="saved-empty" data-saved-empty="fav">No favorites yet. Use the heart button on any article.</p>
+    </section>
+  </div>
+</BaseLayout>
