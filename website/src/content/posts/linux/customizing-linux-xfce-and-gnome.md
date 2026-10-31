@@ -1,12 +1,12 @@
 ---
 title: "Customizing Linux: The XFCE and GNOME Edition"
 description: "How to customize Linux with themes, effects, panels and a boot screen. XFCE in detail, GNOME in general, and the macOS look as an example."
-pubDate: 2026-11-02
+pubDate: 2026-10-31
 category: Tooling
 tags: [linux, customization, xfce, gnome, plymouth]
 author: Abu
 difficulty: beginner
-draft: true
+draft: false
 demo: false
 ---
 

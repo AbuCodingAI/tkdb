@@ -1,12 +1,12 @@
 ---
 title: "Getting Started with Linux"
 description: "A beginner's guide to switching to Linux: choosing a distro, making a bootable USB, installing, and dual booting, in the order you will actually do it."
-pubDate: 2026-11-01
+pubDate: 2026-10-31
 category: Tooling
 tags: [linux, beginners, install, dual boot]
 author: Abu
 difficulty: beginner
-draft: true
+draft: false
 demo: false
 ---
 

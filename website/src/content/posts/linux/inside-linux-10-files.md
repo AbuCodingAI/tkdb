@@ -1,12 +1,12 @@
 ---
 title: "Inside Linux: 10 Files Every User Should Know"
 description: "Ten files that tell you how your Linux system works: what each one does, which you edit, and which you only read."
-pubDate: 2026-11-03
+pubDate: 2026-10-31
 category: Tooling
 tags: [linux, beginners, files, configuration]
 author: Abu
 difficulty: beginner
-draft: true
+draft: false
 demo: false
 ---
 
