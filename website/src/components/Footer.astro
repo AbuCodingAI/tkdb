@@ -32,7 +32,7 @@ const year = new Date().getFullYear();
     </div>
     <div class="footer-bottom">
       <span>© {year} {SITE.name}. All rights reserved.</span>
-      <span class="mono">No ads · No trackers</span>
+      <span class="mono">{SITE.integrations.adsense.enabled ? 'Ads by Google' : 'No ads · No trackers'}</span>
     </div>
   </div>
 </footer>

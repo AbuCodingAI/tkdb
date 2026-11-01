@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
 import { getPosts, postsForBlog } from '../../../lib/content';
+import AdSlot from '../../../components/AdSlot.astro';
 import { templates } from '../../../lib/templates';
 
 export async function getStaticPaths() {
@@ -25,6 +26,7 @@ const more = siblings.filter((p) => p !== post).slice(0, 2);
   rss={{ title: `${post.blog.data.name} — RSS`, href: post.blog.rssUrl }}
 >
   <Template post={post} headings={headings}><Content /></Template>
+  <AdSlot slot="postBottom" />
   {more.length > 0 && (
     <section class="container post-nav" aria-label="More from this blog">
       <h2 style="font-size:1.3rem">More from {post.blog.data.name}</h2>

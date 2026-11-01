@@ -14,6 +14,8 @@ const { title, description = SITE.description, image, type = 'website', publishe
 const fullTitle = title ? `${title} · ${SITE.name}` : SITE.fullName;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url);
 const imageUrl = image ? new URL(image, Astro.site ?? SITE.url).href : undefined;
+const ads = SITE.integrations.adsense;
+const adsOn = ads.enabled && /^ca-pub-\d+$/.test(ads.clientId);
 const jsonLd =
   type === 'article'
     ? {
@@ -68,7 +70,10 @@ const jsonLd =
   })();
 </script>
 
+{adsOn && <meta name="google-adsense-account" content={ads.clientId} />}
+{adsOn && <script is:inline async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ads.clientId}`} crossorigin="anonymous"></script>}
+
 <!--
-  Future integrations (all OFF). See docs/FUTURE.md and SITE.integrations in src/config.ts.
+  Future integrations. AdSense is wired above and stays off until SITE.integrations.adsense is enabled with a valid client id. See docs/FUTURE.md and SITE.integrations in src/config.ts.
   Analytics, AdSense and comment scripts must only be added here, behind those flags.
 -->

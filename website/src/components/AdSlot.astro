@@ -1,0 +1,14 @@
+---
+import { SITE } from '../config';
+interface Props { slot: keyof typeof SITE.integrations.adsense.slots }
+const ads = SITE.integrations.adsense;
+const slotId = ads.slots[Astro.props.slot];
+const on = ads.enabled && /^ca-pub-\d+$/.test(ads.clientId) && /^\d+$/.test(slotId);
+---
+{on && (
+  <aside class="container ad-slot" aria-label="Advertisement">
+    <p class="muted mono" style="font-size:0.7rem;text-align:center">Advertisement</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client={ads.clientId} data-ad-slot={slotId} data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+    <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </aside>
+)}

@@ -37,7 +37,7 @@ export const SITE = {
    */
   integrations: {
     analytics: { enabled: false, provider: '' as '' | 'cloudflare' | 'plausible', siteId: '' },
-    adsense: { enabled: false, clientId: '' },
+    adsense: { enabled: false, clientId: '', slots: { postBottom: '' } },
     comments: { enabled: false, provider: '' },
   },
 } as const;
