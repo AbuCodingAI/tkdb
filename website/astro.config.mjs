@@ -12,7 +12,7 @@ export default defineConfig({
   site,
   output: 'static',
   trailingSlash: 'ignore',
-  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/search') })],
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/search') && !page.includes('/dev-page') })],
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],

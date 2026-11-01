@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getBlogs, getPosts, getPapers, getProjects } from '../lib/content';
+
+const blogs = await getBlogs();
+const posts = await getPosts();
+const papers = await getPapers();
+const projects = await getProjects();
+const perBlog = blogs.map((b) => ({ name: b.data.name, count: posts.filter((p) => p.blog.id === b.id).length, url: b.url }));
+const minutes = posts.reduce((n, p) => n + p.minutes, 0);
+const latest = posts.slice(0, 5);
+const built = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+// Hash of the dev page password. To change it: printf 'newpassword' | sha256sum, then paste the hash here.
+const PASS_HASH = '234ae6c4d43cd657cd0a611a5c48848758388e54831dcec373741baa2f058ce8';
+---
+
+<BaseLayout title="Dev page" description="Private dashboard." noindex>
+  <div class="container narrow" style="width:min(100% - 2.5rem, 46rem)">
+    <header class="page-head"><p class="kicker">Dev</p><h1>Site dashboard</h1></header>
+
+    <form id="gate" style="display:flex;gap:0.6rem;margin:1rem 0">
+      <label class="sr-only" for="pw">Password</label>
+      <input id="pw" type="password" placeholder="Password" autocomplete="current-password" style="flex:1;padding:0.6rem 0.8rem" />
+      <button type="submit" class="btn">Unlock</button>
+    </form>
+    <p id="err" class="muted" role="alert" style="color:var(--accent)" hidden>Wrong password.</p>
+
+    <div id="panel" hidden>
+      <h2>Content</h2>
+      <p class="muted mono" style="font-size:0.85rem">Built {built}</p>
+      <ul>
+        <li><strong>{posts.length}</strong> published articles (AdSense target: 30)</li>
+        <li><strong>{papers.length}</strong> papers, <strong>{projects.length}</strong> projects</li>
+        <li><strong>{minutes}</strong> total reading minutes</li>
+      </ul>
+      <h3>Articles per blog</h3>
+      <ul>{perBlog.map((b) => <li><a href={b.url}>{b.name}</a>: {b.count}</li>)}</ul>
+      <h3>Newest articles</h3>
+      <ul>{latest.map((p) => <li><a href={p.url}>{p.data.title}</a> <span class="muted">({p.blog.data.name})</span></li>)}</ul>
+
+      <h2>Visitors</h2>
+      <p class="muted">Views and the most popular blog need visitor analytics, which this site does not collect yet. When Cloudflare Web Analytics is added, open its dashboard in Cloudflare under Analytics &amp; Logs, then Web Analytics.</p>
+
+      <h2>Estimated earnings</h2>
+      <p class="muted">An estimate only. Enter your monthly page views and your RPM (earnings per 1,000 views). Both are saved in this browser.</p>
+      <p style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center">
+        <label>Views per month <input id="views" type="number" min="0" value="0" style="width:8rem;padding:0.4rem" /></label>
+        <label>RPM (USD) <input id="rpm" type="number" min="0" step="0.1" value="2" style="width:6rem;padding:0.4rem" /></label>
+      </p>
+      <p>Estimated: <strong id="est">$0.00</strong> per month</p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ PASS_HASH }}>
+  const gate = document.getElementById('gate');
+  const panel = document.getElementById('panel');
+  const err = document.getElementById('err');
+  async function sha(s) {
+    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+    return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
+  }
+  function unlock() { gate.hidden = true; err.hidden = true; panel.hidden = false; }
+  if (sessionStorage.getItem('tkdb-dev') === PASS_HASH) unlock();
+  gate.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const h = await sha(document.getElementById('pw').value);
+    if (h === PASS_HASH) { sessionStorage.setItem('tkdb-dev', h); unlock(); } else { err.hidden = false; }
+  });
+  const v = document.getElementById('views'), r = document.getElementById('rpm'), est = document.getElementById('est');
+  try { v.value = localStorage.getItem('tkdb-dev-views') ?? v.value; r.value = localStorage.getItem('tkdb-dev-rpm') ?? r.value; } catch (e) {}
+  function calc() {
+    est.textContent = '$' + ((+v.value || 0) / 1000 * (+r.value || 0)).toFixed(2);
+    try { localStorage.setItem('tkdb-dev-views', v.value); localStorage.setItem('tkdb-dev-rpm', r.value); } catch (e) {}
+  }
+  v.addEventListener('input', calc); r.addEventListener('input', calc); calc();
+</script>
