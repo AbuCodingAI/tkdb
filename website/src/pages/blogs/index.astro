@@ -8,7 +8,7 @@ import { getBlogs, getPosts, postsForBlog } from '../../lib/content';
 const [blogs, posts] = await Promise.all([getBlogs(), getPosts()]);
 // getPosts() is already sorted newest first.
 // Featured: the "10 files" Linux post (falls back to the newest post). posts is sorted newest first.
-const lead = posts.find((p) => p.url.includes('inside-linux-10-files')) ?? posts[0];
+const lead = posts.find((p) => p.url.includes('50-linux-commands')) ?? posts[0];
 // More stories: the newest story from 3 different blogs, excluding the featured post and its blog.
 const seen = new Set(lead ? [lead.blog.id] : []);
 const more = [];

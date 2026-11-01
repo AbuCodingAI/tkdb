@@ -12,7 +12,7 @@ import { getBlogs, getPosts, getProjects, getPapers, getVideos, postsForBlog } f
 
 const [blogs, posts, projects, papers, videos] = await Promise.all([getBlogs(), getPosts(), getProjects(), getPapers(), getVideos()]);
 // Featured: the "10 files" Linux post (falls back to the newest post). Same lead story as the Blogs page.
-const lead = posts.find((p) => p.url.includes('inside-linux-10-files')) ?? posts[0];
+const lead = posts.find((p) => p.url.includes('50-linux-commands')) ?? posts[0];
 const featured = lead ? [lead] : [];
 // Latest: the newest story from each of up to 6 different blogs, not the featured blog.
 const seen = new Set(lead ? [lead.blog.id] : []);
