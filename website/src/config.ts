@@ -15,7 +15,7 @@ export const SITE = {
   author: {
     name: 'Abu',
     bio: 'Linux user and builder (Ubuntu since March, Arch since last month). Writes the Linux Internals blog. The daily news articles on TKDB are fully AI generated.',
-    email: '',
+    email: 'tkdb_help@outlook.com',
     links: {
       github: '',
       youtube: '',
