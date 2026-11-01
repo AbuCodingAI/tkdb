@@ -1,0 +1,25 @@
+---
+---
+<div id="cookie-notice" class="cookie-notice" hidden role="region" aria-label="Cookie notice">
+  <p>This site sets no tracking cookies. It only uses your browser's local storage for your theme and saved posts. <a href="/privacy/">Privacy</a></p>
+  <button type="button" id="cookie-ok">Got it</button>
+</div>
+<script is:inline>
+  (function () {
+    var el = document.getElementById('cookie-notice');
+    try { if (localStorage.getItem('tkdb-cookie-ok')) return; } catch (e) {}
+    el.hidden = false;
+    document.getElementById('cookie-ok').addEventListener('click', function () {
+      try { localStorage.setItem('tkdb-cookie-ok', '1'); } catch (e) {}
+      el.hidden = true;
+    });
+  })();
+</script>
+<style is:global>
+  .cookie-notice { position: fixed; left: 1rem; right: 1rem; bottom: 1rem; max-width: 34rem; margin: 0 auto; z-index: 60;
+    display: flex; gap: 1rem; align-items: center; padding: 0.8rem 1rem; border-radius: 12px; font-size: 0.85rem;
+    background: var(--bg-elev, #fff); color: var(--ink, #111); border: 1px solid var(--line, #ccc); box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+  .cookie-notice[hidden] { display: none; }
+  .cookie-notice p { margin: 0; flex: 1; }
+  .cookie-notice button { cursor: pointer; border: 0; border-radius: 8px; padding: 0.45rem 0.9rem; font: inherit; background: var(--accent, #2563eb); color: var(--accent-ink, #fff); }
+</style>
