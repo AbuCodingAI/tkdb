@@ -7,7 +7,7 @@ export const SITE = {
   fullName: 'TKDB — The Kernel Daily Blog',
   tagline: 'Analyzing the kernels of today.',
   description:
-    'TKDB is an independent technology publishing platform: multiple blogs, original papers, engineering projects, and videos in one place.',
+    'TKDB is an independent technology publishing platform: multiple blogs, original research journals, engineering projects, and videos in one place.',
   url: (import.meta.env.SITE as string | undefined) ?? 'https://tkdb.pages.dev',
   locale: 'en-US',
 
@@ -25,7 +25,7 @@ export const SITE = {
 
   nav: [
     { label: 'Blogs', href: '/blogs/' },
-    { label: 'Papers', href: '/papers/' },
+    { label: 'Genius Journals', href: '/papers/' },
     { label: 'Projects', href: '/projects/' },
     { label: 'Videos', href: '/videos/' },
     { label: 'About', href: '/about/' },

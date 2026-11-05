@@ -18,4 +18,4 @@ I'm Abu, the person behind TKDB. I'm a Linux user and builder: I started on Ubun
 ## What you will find here
 
 - Several independent [blogs](/blogs/)
-- [Papers](/papers/), [projects](/projects/) and [videos](/videos/)
+- [Genius Journals](/papers/), [projects](/projects/) and [videos](/videos/)
